@@ -44,15 +44,20 @@ export const Notifications: React.FC<Notifications> = ({ messages, timeout = 300
     const containerElRef = useRef<HTMLElement | null>(document.getElementById('notifications'));
 
     useEffect(() => {
-        if (!containerElRef.current) {
+        if (!containerElRef.current && msgs.length) {
+            const cEl = document.createElement('div');
+            cEl.id = 'notifications-container';
+            cEl.className = "container";
+            cEl.setAttribute('style', "positon: relative; min-height: 400px;")
+
             const el = document.createElement('ul');
             el.id = 'notifications';
             el.className = 'list-unstyled container';
             el.setAttribute('aria-live', 'polite');
             el.setAttribute('aria-atomic', 'true');
 
-
-            document.body.appendChild(el);
+            cEl.appendChild(el);
+            document.body.appendChild(cEl);
             containerElRef.current = el;
             setContainerEl(el);
         }
@@ -60,13 +65,13 @@ export const Notifications: React.FC<Notifications> = ({ messages, timeout = 300
         return function cleanup() {
             // remove DOM node if no notifications are left
             // also, run unnecessary check for .current to satisfy TS
-            if (containerElRef.current && !containerElRef.current.childNodes.length) {
-                document.body.removeChild(containerElRef.current)
+            if (containerElRef.current && containerElRef.current.parentElement && !containerElRef.current.childNodes.length) {
+                document.body.removeChild(containerElRef.current.parentElement)
                 containerElRef.current = null;
                 setContainerEl(null);
             }
         }
-    })
+    }, [msgs])
 
     // update notifications
     useEffect(() => { setMsgs(genIDs(messages)) }, [messages])
@@ -81,7 +86,7 @@ export const Notifications: React.FC<Notifications> = ({ messages, timeout = 300
         return () => {
             clearInterval(intervalRef.current);
         };
-    });
+    }, [msgs]);
 
 
     // show Notifications
