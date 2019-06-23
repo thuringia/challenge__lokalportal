@@ -1,23 +1,22 @@
 import React from 'react';
 
-const Notification: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface Notification {
+    type: "primary" | "danger" | "info" | "warning",
+    message: string,
+    dismissable?: boolean
+}
+
+const Notification: React.FC<Notification> = ({ type, message, dismissable }) => {
+    return (
+        <div className={`alert alert-${type}`} role="alert">
+            {message}
+            {!dismissable ? "" : (
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            )}
+        </div>
+    );
 }
 
 export default Notification;
