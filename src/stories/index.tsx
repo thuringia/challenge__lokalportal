@@ -1,10 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, select, boolean, text } from '@storybook/addon-knobs';
+import { withKnobs, select, boolean, text, number } from '@storybook/addon-knobs';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-import {Notification} from '../components/Notifications';
+import Notifications, { Notification, NotificationP } from '../components/Notifications';
 
 storiesOf('Notifications', module)
   .addDecorator(withKnobs)
@@ -25,3 +25,18 @@ storiesOf('Notifications', module)
       />
     </div>)
   )
+  .add('use notifications', () => {
+    const count = number('Amount', 3);
+    const message = text('Message', 'foobar');
+    const type = select('type', ['primary', 'danger', 'info', 'warning'], 'primary');
+
+    let messages: NotificationP[] = []
+    for (let index = 0; index < count; index++) {
+      messages.push({type, message})
+      
+    }
+    
+    return (<div className="container">
+      <Notifications messages={messages} />
+    </div>)
+  })
