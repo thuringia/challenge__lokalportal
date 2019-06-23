@@ -40,23 +40,29 @@ export const Notifications: React.FC<Notifications> = ({ messages, timeout = 300
     const [msgs, setMsgs] = useState(genIDs(messages))
 
     // set up our DOM node
-    const [containerEl, setContainerEl] = useState<HTMLElement | null>(document.getElementById('notifications'));
+    const [containerEl, setContainerEl] = useState<HTMLElement | null>();
+    const containerElRef = useRef<HTMLElement | null>(document.getElementById('notifications'));
 
     useEffect(() => {
-        if (!containerEl) {
+        if (!containerElRef.current) {
             const el = document.createElement('ul');
-            el.id = 'notifications'
-            el.className = 'list-unstyled container'
+            el.id = 'notifications';
+            el.className = 'list-unstyled container';
+            el.setAttribute('aria-live', 'polite');
+            el.setAttribute('aria-atomic', 'true');
 
-            document.body.appendChild(el)
+
+            document.body.appendChild(el);
+            containerElRef.current = el;
             setContainerEl(el);
         }
 
         return function cleanup() {
             // remove DOM node if no notifications are left
             // also, run unnecessary check for .current to satisfy TS
-            if (containerEl && !containerEl.childNodes.length) {
-                document.body.removeChild(containerEl)
+            if (containerElRef.current && !containerElRef.current.childNodes.length) {
+                document.body.removeChild(containerElRef.current)
+                containerElRef.current = null;
                 setContainerEl(null);
             }
         }
