@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './styles.css';
 
-export interface NotificationP {
+export interface Notification {
     type: "primary" | "danger" | "info" | "warning",
     message: string,
     dismissable?: boolean,

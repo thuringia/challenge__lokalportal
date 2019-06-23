@@ -4,7 +4,7 @@ import { withKnobs, select, boolean, text, number } from '@storybook/addon-knobs
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-import Notifications, { Notification, NotificationP } from '../components/Notifications';
+import Notifications, { Notification } from '../components/Notifications';
 
 storiesOf('Notifications', module)
   .addDecorator(withKnobs)
@@ -30,7 +30,7 @@ storiesOf('Notifications', module)
     const message = text('Message', 'foobar');
     const type = select('type', ['primary', 'danger', 'info', 'warning'], 'primary');
 
-    let messages: NotificationP[] = []
+    let messages: Notification[] = []
     for (let index = 0; index < count; index++) {
       messages.push({type, message})
       
