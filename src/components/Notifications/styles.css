@@ -1,0 +1,24 @@
+#notification-container {
+    position: relative;
+    min-height: 400px;
+}
+
+.br {
+    bottom: 0;
+    right: 0;
+}
+
+.bl {
+    bottom: 0;
+    left: 0;
+}
+
+.tl {
+    top: 0;
+    left: 0;
+}
+
+.tr {
+    top: 0;
+    right: 0;
+}

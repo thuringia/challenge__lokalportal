@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, DOMElement } from 'react';
 import ReactDOM from 'react-dom';
 
+import './styles.css';
+
 export interface NotificationP {
     type: "primary" | "danger" | "info" | "warning",
     message: string,
@@ -11,6 +13,7 @@ export interface NotificationP {
 
 interface Notifications {
     messages: NotificationP[],
+    position: 'tl' | 'tr' | 'bl' | 'br',
     timeout?: number | 1000
 }
 
@@ -32,8 +35,8 @@ export const Notification: React.FC<NotificationP> = ({ type, message, dismissab
         ));
 }
 
-export const Notifications: React.FC<Notifications> = ({ messages, timeout = 3000 }) => {
-    const genIDs = arr => arr.map((msg, idx) => ({ key: `${tag}_${idx}`, ...msg }))
+export const Notifications: React.FC<Notifications> = ({ messages, position = 'tr', timeout = 3000 }) => {
+    const genIDs = arr => arr.map((msg, idx) => ({ key: `${tag}_${idx}`, ...msg }));
 
     // generate IDs to track the notifications of each caller
     const tag = Math.random() * 10000;
@@ -48,11 +51,10 @@ export const Notifications: React.FC<Notifications> = ({ messages, timeout = 300
             const cEl = document.createElement('div');
             cEl.id = 'notifications-container';
             cEl.className = "container";
-            cEl.setAttribute('style', "positon: relative; min-height: 400px;")
 
             const el = document.createElement('ul');
             el.id = 'notifications';
-            el.className = 'list-unstyled container';
+            el.className = `list-unstyled position-absolute ${position}`;
             el.setAttribute('aria-live', 'polite');
             el.setAttribute('aria-atomic', 'true');
 
