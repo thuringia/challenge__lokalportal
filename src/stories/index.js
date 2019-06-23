@@ -4,7 +4,7 @@ import { withKnobs, select, boolean, text } from '@storybook/addon-knobs';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-import Notification from '../components/Notification';
+import {Notification} from '../components/Notifications';
 
 storiesOf('Notifications', module)
   .addDecorator(withKnobs)

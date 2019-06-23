@@ -6,7 +6,11 @@ interface Notification {
     dismissable?: boolean
 }
 
-const Notification: React.FC<Notification> = ({ type, message, dismissable }) => {
+interface Notifications {
+    messages: Notification[]
+}
+
+export const Notification: React.FC<Notification> = ({ type, message, dismissable }) => {
     return (
         <div className={`alert alert-${type}`} role="alert">
             {message}
@@ -19,4 +23,8 @@ const Notification: React.FC<Notification> = ({ type, message, dismissable }) =>
     );
 }
 
-export default Notification;
+export const Notifications: React.FC<Notifications> = ({ messages }) => {
+    return (<div></div>)
+}
+
+export default Notifications;
