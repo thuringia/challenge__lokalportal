@@ -32,10 +32,12 @@ export const Notification: React.FC<NotificationP> = ({ type, message, dismissab
         ));
 }
 
-export const Notifications: React.FC<Notifications> = ({ messages, timeout = 1000 }) => {
+export const Notifications: React.FC<Notifications> = ({ messages, timeout = 3000 }) => {
+    const genIDs = arr => arr.map((msg, idx) => ({ key: `${tag}_${idx}`, ...msg }))
+
     // generate IDs to track the notifications of each caller
     const tag = Math.random() * 10000;
-    const msgs = messages.map((msg, idx) => ({ key: `${tag}_${idx}`, ...msg }));
+    const [msgs, setMsgs] = useState(genIDs(messages))
 
     // set up our DOM node
     const [containerEl, setContainerEl] = useState<HTMLElement | null>(document.getElementById('notifications'));
@@ -44,6 +46,7 @@ export const Notifications: React.FC<Notifications> = ({ messages, timeout = 100
         if (!containerEl) {
             const el = document.createElement('ul');
             el.id = 'notifications'
+            el.className = 'list-unstyled container'
 
             document.body.appendChild(el)
             setContainerEl(el);
@@ -59,7 +62,21 @@ export const Notifications: React.FC<Notifications> = ({ messages, timeout = 100
         }
     })
 
+    // update notifications
+    useEffect(() => { setMsgs(genIDs(messages)) }, [messages])
+
     // hide notifications
+    const intervalRef = useRef<number | Timeout>();
+    useEffect(() => {
+        const id = setTimeout(() => {
+            setMsgs([])
+        }, timeout);
+        intervalRef.current = id;
+        return () => {
+            clearInterval(intervalRef.current);
+        };
+    });
+
 
     // show Notifications
     // 

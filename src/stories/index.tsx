@@ -37,6 +37,6 @@ storiesOf('Notifications', module)
     }
     
     return (<div className="container">
-      <Notifications messages={messages} />
+      <Notifications messages={messages} timeout={number('Timeout', 3000)}/>
     </div>)
   })
