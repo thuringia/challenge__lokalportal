@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, DOMElement } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 
 import './styles.css';
@@ -24,14 +24,14 @@ export const Notification: React.FC<NotificationP> = ({ type, message, dismissab
             role: "alert",
             ...rest
         },
-            <div >
+            <>
                 {message}
                 {!dismissable ? "" : (
                     <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 )}
-            </div>
+            </>
         ));
 }
 
@@ -73,7 +73,7 @@ export const Notifications: React.FC<Notifications> = ({ messages, position = 't
                 setContainerEl(null);
             }
         }
-    }, [msgs])
+    }, [msgs, position])
 
     // update notifications
     useEffect(() => { setMsgs(genIDs(messages)) }, [messages])
@@ -88,7 +88,7 @@ export const Notifications: React.FC<Notifications> = ({ messages, position = 't
         return () => {
             clearInterval(intervalRef.current);
         };
-    }, [msgs]);
+    }, [msgs, timeout]);
 
 
     // show Notifications
@@ -96,7 +96,7 @@ export const Notifications: React.FC<Notifications> = ({ messages, position = 't
     return (
         containerEl ?
             ReactDOM.createPortal(
-                <>{msgs.map(msg => { console.log(msg); return (<Notification elementType="li" {...msg} />) })}</>
+                <>{msgs.map(msg => (<Notification elementType="li" {...msg} />))}</>
                 , containerEl) :
             <></>
     );
